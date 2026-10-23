@@ -30,7 +30,7 @@ input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--lin
  <div class="links"><button class="lnk" data-go="forgot">Forget password</button><button class="lnk" data-go="signup">إنشاء حساب جديد</button></div>
  <div class="or">أو ادخل بواسطة</div>
  <button class="btn social" data-p="google"><svg viewBox="0 0 24 24"><path fill="#EA4335" d="M12 10.2v3.9h5.5c-.2 1.3-1.6 3.9-5.5 3.9a6 6 0 1 1 0-12c1.9 0 3.1.8 3.8 1.5l2.6-2.5A9.5 9.5 0 0 0 12 2.5a9.5 9.5 0 1 0 0 19c5.5 0 9.1-3.9 9.1-9.3 0-.6-.1-1.1-.2-1.6z"/></svg>المتابعة بـ Google</button>
- <button class="btn social" data-p="facebook"><svg viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12a12 12 0 1 0-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.900V12h3.400l-.5 3.500h-2.900v8.400A12 12 0 0 0 24 12z"/></svg>المتابعة بـ Facebook</button>
+ <button class="btn social" data-go="phone"><svg viewBox="0 0 24 24" fill="none" stroke="#5cff9b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.800.7a2 2 0 0 1 1.700 2z"/></svg>المتابعة برقم الموبايل</button>
 </section>
 
 <section class="view" id="v-signup">
@@ -48,6 +48,16 @@ input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--lin
  <button class="btn primary" id="bForgot">إرسال لينك الاستعادة</button>
  <div class="links"><button class="lnk" data-go="login">← رجوع لتسجيل الدخول</button></div>
 </section>
+<section class="view" id="v-phone">
+ <h2>الدخول برقم الموبايل</h2><p class="sub">هنبعتلك كود تحقق برسالة SMS.</p>
+ <div id="step1"><label for="ph">رقم الموبايل</label><input id="ph" type="tel" dir="ltr" autocomplete="tel" placeholder="01012345678 أو +201012345678">
+ <button class="btn primary" id="bSend">إرسال الكود</button></div>
+ <div id="step2" style="display:none"><label for="pc">كود التحقق</label><input id="pc" inputmode="numeric" maxlength="6" dir="ltr" autocomplete="one-time-code" placeholder="123456">
+ <button class="btn primary" id="bVerify">تأكيد ودخول</button>
+ <div class="links"><button class="lnk" id="bResend">تغيير الرقم / إعادة الإرسال</button></div></div>
+ <div id="rc"></div>
+ <div class="links"><button class="lnk" data-go="login">← رجوع لتسجيل الدخول</button></div>
+</section>
 <div id="msg" class="msg" role="alert"></div>
 </main>
 
@@ -62,7 +72,7 @@ function view(n){document.querySelectorAll('.view').forEach(function(v){v.classL
   if(n==='forgot'&&$('le').value&&!$('fe').value)$('fe').value=$('le').value}
 document.querySelectorAll('[data-go]').forEach(function(b){b.onclick=function(){view(b.dataset.go)}});
 document.querySelectorAll('[data-eye]').forEach(function(b){b.onclick=function(){var i=$(b.dataset.eye),h=i.type==='password';i.type=h?'text':'password';b.textContent=h?'إخفاء':'إظهار'}});
-var ERR={'auth/invalid-credential':'الإيميل أو كلمة المرور غير صحيحة.','auth/wrong-password':'كلمة المرور غير صحيحة.','auth/user-not-found':'مفيش حساب بالإيميل ده.','auth/invalid-email':'صيغة الإيميل غير صحيحة.','auth/email-already-in-use':'الإيميل ده مسجّل قبل كده. جرّب تسجيل الدخول.','auth/weak-password':'كلمة المرور ضعيفة، لازم 6 أحرف على الأقل.','auth/too-many-requests':'محاولات كتير. استنى شوية وجرّب تاني.','auth/network-request-failed':'مشكلة في الاتصال بالإنترنت.','auth/popup-closed-by-user':'اتقفلت نافذة الدخول قبل ما تخلص.','auth/cancelled-popup-request':'اتقفلت نافذة الدخول قبل ما تخلص.','auth/popup-blocked':'المتصفح منع النافذة. اسمح بالنوافذ المنبثقة وجرّب تاني.','auth/account-exists-with-different-credential':'الإيميل ده مسجّل بطريقة دخول تانية. ادخل بيها الأول.','auth/unauthorized-domain':'الدومين ده مش مضاف في Firebase (Authentication > Settings > Authorized domains).','auth/operation-not-allowed':'طريقة الدخول دي لسه متفعّلتش في Firebase.'};
+var ERR={'auth/invalid-credential':'الإيميل أو كلمة المرور غير صحيحة.','auth/wrong-password':'كلمة المرور غير صحيحة.','auth/user-not-found':'مفيش حساب بالإيميل ده.','auth/invalid-email':'صيغة الإيميل غير صحيحة.','auth/email-already-in-use':'الإيميل ده مسجّل قبل كده. جرّب تسجيل الدخول.','auth/weak-password':'كلمة المرور ضعيفة، لازم 6 أحرف على الأقل.','auth/too-many-requests':'محاولات كتير. استنى شوية وجرّب تاني.','auth/network-request-failed':'مشكلة في الاتصال بالإنترنت.','auth/popup-closed-by-user':'اتقفلت نافذة الدخول قبل ما تخلص.','auth/cancelled-popup-request':'اتقفلت نافذة الدخول قبل ما تخلص.','auth/popup-blocked':'المتصفح منع النافذة. اسمح بالنوافذ المنبثقة وجرّب تاني.','auth/account-exists-with-different-credential':'الإيميل ده مسجّل بطريقة دخول تانية. ادخل بيها الأول.','auth/unauthorized-domain':'الدومين ده مش مضاف في Firebase (Authentication > Settings > Authorized domains).','auth/invalid-phone-number':'رقم الموبايل غير صحيح.','auth/invalid-verification-code':'الكود غير صحيح.','auth/code-expired':'الكود انتهت صلاحيته، اطلب كود جديد.','auth/quota-exceeded':'تم تجاوز حد الرسائل اليومي، جرّب لاحقًا.','auth/captcha-check-failed':'فشل التحقق الأمني، حدّث الصفحة وجرّب تاني.','auth/missing-phone-number':'اكتب رقم الموبايل.','auth/operation-not-allowed':'طريقة الدخول دي لسه متفعّلتش في Firebase.'};
 function fail(e){show(ERR[e.code]||('حصل خطأ: '+(e.code||e.message)),'err')}
 function dest(){var n=new URLSearchParams(location.search).get('next');return(n&&!/^[a-z]+:|\/\//i.test(n)&&n.indexOf('login')<0)?n:'index.html'}
 function done(){location.replace(dest())}
@@ -74,7 +84,15 @@ if(!TA.configured){$('warn').style.display='block'}else{
     TA.auth.createUserWithEmailAndPassword(e,p).then(function(c){return c.user.updateProfile({displayName:n}).then(function(){c.user.sendEmailVerification().catch(function(){})}).then(done)}).catch(fail).finally(function(){busy(b,0)})};
   $('bForgot').onclick=function(){var b=this,e=$('fe').value.trim();clr();if(!e)return show('اكتب الإيميل.','err');busy(b,1);
     TA.auth.sendPasswordResetEmail(e).then(function(){show('لو الإيميل مسجّل عندنا، هيوصلك لينك لإنشاء كلمة مرور جديدة. افتح الإيميل (وبص في Spam) واتبع اللينك، وبعدين ارجع سجّل دخول.','ok')}).catch(function(x){x.code==='auth/user-not-found'?show('لو الإيميل مسجّل عندنا، هيوصلك لينك لإنشاء كلمة مرور جديدة.','ok'):fail(x)}).finally(function(){busy(b,0)})};
-  document.querySelectorAll('[data-p]').forEach(function(b){b.onclick=function(){clr();var p=b.dataset.p==='google'?new firebase.auth.GoogleAuthProvider():new firebase.auth.FacebookAuthProvider();TA.auth.signInWithPopup(p).then(done).catch(fail)}});
-  [['le','bLogin'],['lp','bLogin'],['se','bSignup'],['sp','bSignup'],['fe','bForgot']].forEach(function(x){$(x[0]).addEventListener('keydown',function(e){if(e.key==='Enter')$(x[1]).click()})});
+  document.querySelectorAll('[data-p]').forEach(function(b){b.onclick=function(){clr();TA.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(done).catch(fail)}});
+  var rc=null,conf=null;
+  function norm(v){v=v.replace(/[\s\-()]/g,'');if(/^00/.test(v))v='+'+v.slice(2);if(/^0\d{10}$/.test(v))v='+20'+v.slice(1);return v}
+  function reset(){$('step1').style.display='block';$('step2').style.display='none';try{rc&&rc.clear()}catch(x){}rc=null;conf=null;$('rc').innerHTML=''}
+  $('bSend').onclick=function(){var b=this,n=norm($('ph').value);clr();if(!/^\+\d{8,15}$/.test(n))return show('اكتب الرقم بصيغة 01012345678 أو +201012345678.','err');busy(b,1);
+    if(!rc)rc=new firebase.auth.RecaptchaVerifier('rc',{size:'invisible'});
+    TA.auth.signInWithPhoneNumber(n,rc).then(function(c){conf=c;$('step1').style.display='none';$('step2').style.display='block';show('اتبعت كود التحقق على '+n,'ok')}).catch(function(e){fail(e);reset()}).finally(function(){busy(b,0)})};
+  $('bVerify').onclick=function(){var b=this,c=$('pc').value.trim();clr();if(!conf)return reset();if(!/^\d{6}$/.test(c))return show('اكتب الكود المكوّن من 6 أرقام.','err');busy(b,1);conf.confirm(c).then(done).catch(fail).finally(function(){busy(b,0)})};
+  $('bResend').onclick=function(){clr();reset()};
+  [['ph','bSend'],['pc','bVerify'],['le','bLogin'],['lp','bLogin'],['se','bSignup'],['sp','bSignup'],['fe','bForgot']].forEach(function(x){$(x[0]).addEventListener('keydown',function(e){if(e.key==='Enter')$(x[1]).click()})});
 }
 </script></body></html>

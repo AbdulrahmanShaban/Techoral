@@ -7,7 +7,7 @@
   TA.auth.onAuthStateChanged(function(u){
     if(!u){go();return;}
     h.style.visibility='visible';
-    var el=document.getElementById('techoraUser'); if(el) el.textContent=u.displayName||u.email||'';
+    var el=document.getElementById('techoraUser'); if(el) el.textContent=u.displayName||u.email||u.phoneNumber||'';
   });
   window.techoraLogout=function(){TA.auth.signOut().then(function(){location.replace(root+'login.html');});};
 })();
